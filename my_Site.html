@@ -7,28 +7,17 @@
         </style>
         <!--Load the APIs-->
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-        <!--script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script-->
-        <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script-->
         <script type="text/javascript"> 
             google.load('visualization', '1',
                 {'packages':['corechart', 'table']}
                 ); 
         </script>
         <script type="text/javascript">
-            //fetch supplies user and pass from form
-            //a bit of jquery
-            //$(document).ready(function(){
-            //    $("button").click(authenticate($("#usr").val(), $("#pss").val()));
-            //});
             function authenticate(){
-                //Attempts to fetch data from input
+                //fetch data from input
                 var user_atmpt = document.getElementById("usr").value;
                 var pass_atmpt = document.getElementById("pss").value;
-                //document.getElementById("display_bar").innerHTML = 'select A,B where A matches ' + '"' + user_atmpt + '"'
             
-                // fetch correct user and pass from database
-                // Load the Visualization API and the corechart package.
-                
                 function runQuery() {
                     var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1udb0hcuMzfLDXsdBvlOFoRKkE5YXFLz5fX33iqRBJHk/edit?usp=sharing');
                     query.setQuery('select A,B where A matches ' + '"' + user_atmpt + '"');
@@ -63,10 +52,6 @@
    
             }
             
-            //function submit_cred() {
-            //google.setOnLoadCallback(
-            //authenticate();
-            //}
         </script>
     </head>
     <body>
