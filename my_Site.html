@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+        div { text-align: center
+        }
+        </style>
+        <!--Load the APIs-->
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <!--script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script-->
+        <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script-->
+        <script type="text/javascript"> 
+            google.load('visualization', '1',
+                {'packages':['corechart', 'table']}
+                ); 
+        </script>
+        <script type="text/javascript">
+            //fetch supplies user and pass from form
+            //a bit of jquery
+            //$(document).ready(function(){
+            //    $("button").click(authenticate($("#usr").val(), $("#pss").val()));
+            //});
+            function authenticate(){
+                //Attempts to fetch data from input
+                var user_atmpt = document.getElementById("usr").value;
+                var pass_atmpt = document.getElementById("pss").value;
+                //document.getElementById("display_bar").innerHTML = 'select A,B where A matches ' + '"' + user_atmpt + '"'
+            
+                // fetch correct user and pass from database
+                // Load the Visualization API and the corechart package.
+                
+                function runQuery() {
+                    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1udb0hcuMzfLDXsdBvlOFoRKkE5YXFLz5fX33iqRBJHk/edit?usp=sharing');
+                    query.setQuery('select A,B where A matches ' + '"' + user_atmpt + '"');
+                    var data_string =  query.send(handleQueryResponse);
+                };
+                // A callback function that runs when data source responds
+                // Take an object of type QueryResponse
+                function handleQueryResponse(response){
+                    if (response.isError()) {
+                        window.alert("User does not exist")
+                    }
+                    else {                   
+                        data = response.getDataTable().toJSON();
+                        var obj = JSON.parse(data);
+                        if (obj.rows.length ==0) { //because google api does not seem to throwing errors as expected :/
+                            window.alert("User does not exist")
+                        }
+                        else {
+                            var user = obj.rows[0].c[0].v;
+                            var password = obj.rows[0].c[1].v;
+                
+                            if (user.match(user_atmpt) && password.match(pass_atmpt)) {
+                                window.alert('User authenticated!');
+                            }
+                            else {
+                                window.alert('Intruder!');
+                            }; 
+                        };
+                    };
+                }
+                runQuery();
+   
+            }
+            
+            //function submit_cred() {
+            //google.setOnLoadCallback(
+            //authenticate();
+            //}
+        </script>
+    </head>
+    <body>
+    <div>Hello. This is my website. </div>
+    <p id="display_bar">Please Log In</p>
+    <!--A form to log in with-->
+    <p>Username: <input type="text" id="usr" value="aye"></p><br>
+    <p>Password: <input type="password" id="pss" value="bye"></p><br><br>
+    <button onclick="authenticate()">Login</button>
+
+    </body>
+</html>
